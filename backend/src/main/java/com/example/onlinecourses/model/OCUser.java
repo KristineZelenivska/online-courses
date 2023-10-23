@@ -1,13 +1,13 @@
 package com.example.onlinecourses.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,6 +24,7 @@ public class OCUser extends OCAbstractEntity {
     public static final String COLUMN_EMAIL_NAME = "email";
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = COLUMN_SYSID_NAME, nullable = false)
     private Long sysId;
 
@@ -35,6 +36,9 @@ public class OCUser extends OCAbstractEntity {
 
     @Column(name = COLUMN_EMAIL_NAME, nullable = false, unique = true)
     private String email;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OCUserGroups> userGroups = new ArrayList<>();
 
     @Override
     public String getTableName() {
