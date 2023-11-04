@@ -35,7 +35,7 @@ public class OCPerson extends OCAbstractEntity {
     @Column(name = COLUMN_SURNAME_NAME, nullable = false)
     private String surname;
 
-    @Column(name = COLUMN_BIRTHDAY_NAME, nullable = false)
+    @Column(name = COLUMN_BIRTHDAY_NAME)
     private Date birthDay;
 
     @ManyToOne(cascade = CascadeType.ALL)

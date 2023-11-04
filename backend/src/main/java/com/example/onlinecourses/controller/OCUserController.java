@@ -1,6 +1,6 @@
 package com.example.onlinecourses.controller;
 
-import com.example.onlinecourses.model.OCUser;
+import com.example.onlinecourses.dto.UserDTO;
 import com.example.onlinecourses.security.dto.AuthRequest;
 import com.example.onlinecourses.security.jwt.JwtService;
 import com.example.onlinecourses.service.OCUserService;
@@ -33,8 +33,8 @@ public class OCUserController {
     }
 
     @PostMapping("/addNewUser")
-    public String addNewUser(@RequestBody OCUser ocUser) {
-        return service.addUser(ocUser);
+    public String addNewUser(@RequestBody UserDTO user) {
+        return service.addUser(user);
     }
 
     @GetMapping("/user/userProfile")

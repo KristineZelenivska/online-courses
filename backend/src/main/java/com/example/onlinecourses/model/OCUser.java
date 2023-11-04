@@ -28,9 +28,6 @@ public class OCUser extends OCAbstractEntity {
     @Column(name = COLUMN_SYSID_NAME, nullable = false)
     private Long sysId;
 
-    @Column(name = COLUMN_USERNAME_NAME, nullable = false, unique = true)
-    private String username;
-
     @Column(name = COLUMN_PASSWORD_NAME, nullable = false)
     private String password;
 

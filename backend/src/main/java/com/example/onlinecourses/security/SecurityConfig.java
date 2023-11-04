@@ -35,12 +35,15 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 //.formLogin(Customizer.withDefaults())
-                .authorizeHttpRequests(authorizeRequests ->
-                        authorizeRequests.requestMatchers("/auth/welcome", "/auth/addNewUser", "/auth/generateToken").permitAll()
-                                .requestMatchers("/auth/user/**").authenticated()
-                                .requestMatchers("/auth/admin/**").hasRole("ADMIN")
-                                .requestMatchers("auth/notAllowedWOToken").authenticated()
-                                .anyRequest().authenticated()
+//                .authorizeHttpRequests(authorizeRequests ->
+//                        authorizeRequests.requestMatchers("/auth/welcome", "/auth/addNewUser", "/auth/generateToken").permitAll()
+//                                .requestMatchers("/auth/user/**").authenticated()
+//                                .requestMatchers("/auth/admin/**").hasRole("ADMIN")
+//                                .requestMatchers("auth/notAllowedWOToken").authenticated()
+//                                .anyRequest().authenticated()
+//                )
+                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                        .requestMatchers("/**").permitAll()
                 )
                 .logout(Customizer.withDefaults())
                 .authenticationProvider(authenticationProvider())
