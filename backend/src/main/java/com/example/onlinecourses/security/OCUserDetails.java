@@ -1,6 +1,5 @@
 package com.example.onlinecourses.security;
 
-import com.example.onlinecourses.model.OCGroup;
 import com.example.onlinecourses.model.OCUser;
 import com.example.onlinecourses.model.OCUserGroups;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,14 +11,14 @@ import java.util.Collection;
 import java.util.List;
 
 public class OCUserDetails implements UserDetails {
-    private String username;
+    private String email;
     private String password;
 
     private OCUser user;
 
     public OCUserDetails(OCUser ocUser) {
         user = ocUser;
-        username = ocUser.getUsername();
+        email = ocUser.getEmail();
         password = ocUser.getPassword();
     }
 
@@ -39,7 +38,7 @@ public class OCUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 
     @Override

@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface OCUserRepository extends JpaRepository<OCUser, Long> {
-    Optional<OCUser> findByUsername(String username);
+    Optional<OCUser> findByEmail(String email);
 
 }
