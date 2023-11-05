@@ -4,10 +4,10 @@ import { Card, CardTitle, Button, Label, Input } from "reactstrap";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { get } from "lodash";
-import { getUserData } from "../redux/actions/authAction.js";
+import { getUserData, createNewUser } from "../redux/actions/authAction.js";
 
 const actionToProps = (dispatch) => ({
-  actions: bindActionCreators({ getUserData }, dispatch),
+  actions: bindActionCreators({ getUserData, createNewUser }, dispatch),
 });
 
 const mapStateToProps = (state) => ({
@@ -25,7 +25,18 @@ class AuthPage extends Component {
   }
 
   handleSubmit = (values) => {
-    this.props.actions.getUserData(this.state.email, this.toggleRedirect);
+    if (this.state.isLogIn) {
+      this.props.actions.getUserData(this.state.email, this.toggleRedirect);
+    } else {
+      const { name, surname, email, password } = values;
+      const data = {
+        name,
+        surname,
+        email,
+        password,
+      };
+      this.props.actions.createNewUser(data, this.toggleRedirect);
+    }
   };
 
   toggleRedirect = () => {
@@ -64,8 +75,8 @@ class AuthPage extends Component {
           {this.state.isLogIn ? (
             <Card body>
               <CardTitle tag="h3">Sign in</CardTitle>
-              <form>
-                {/* <form onSubmit={this.handleSubmit}> */}
+              {/* <form> */}
+              <form onSubmit={this.handleSubmit}>
                 <Input
                   style={inputStyle}
                   id="emailId"
@@ -82,11 +93,11 @@ class AuthPage extends Component {
                   placeholder="Password"
                   type="password"
                 />
-                {/* <Button type="submit" color="primary" size="lg"> */}
                 <Button
-                  onClick={() => this.handleSubmit()}
+                  // onClick={() => this.handleSubmit()}
                   color="primary"
                   size="lg"
+                  type="submit"
                 >
                   Log in
                 </Button>
@@ -142,7 +153,19 @@ class AuthPage extends Component {
                   </Label>
                 </span>
                 <br />
-                <Button type="submit" color="primary" size="lg">
+                <Button
+                  onClick={() =>
+                    this.handleSubmit({
+                      name: "a",
+                      surname: "b",
+                      email: "c@kd.c",
+                      password: "111",
+                    })
+                  }
+                  // type="submit"
+                  color="primary"
+                  size="lg"
+                >
                   Register
                 </Button>
               </form>
