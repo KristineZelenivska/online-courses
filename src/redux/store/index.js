@@ -2,9 +2,9 @@ import {
   legacy_createStore as createStore,
   applyMiddleware,
   compose,
+  combineReducers,
 } from "redux";
 import rootReducer from "../reducers";
-import { connectRouter } from "connected-react-router";
 import thunk from "redux-thunk";
 
 const initialState = {};
@@ -21,8 +21,9 @@ if (process.env.NODE_ENV === "development") {
 
 const composedEnhancers = compose(applyMiddleware(...middleware), ...enhancers);
 
-export default createStore(
-  connectRouter(rootReducer),
+const store = createStore(
+  combineReducers(rootReducer),
   initialState,
   composedEnhancers
 );
+export default store;

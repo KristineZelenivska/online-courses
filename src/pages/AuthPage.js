@@ -3,7 +3,6 @@ import { Link, Navigate } from "react-router-dom";
 import { Card, CardTitle, Button, Label, Input } from "reactstrap";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { get } from "lodash";
 import { getUserData, createNewUser } from "../redux/actions/authAction.js";
 
 const actionToProps = (dispatch) => ({
@@ -11,7 +10,7 @@ const actionToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => ({
-  user: get(state, "auth.model", []),
+  // user: get(state, "auth.model", []),
 });
 
 class AuthPage extends Component {
@@ -23,18 +22,24 @@ class AuthPage extends Component {
     };
   }
 
-  handleSubmit = (values) => {
+  handleSubmit = (e) => {
+    e.preventDefault();
+    const values = new FormData(e.target);
+
     if (this.state.isLogIn) {
-      this.props.actions.getUserData(this.state.email, this.toggleRedirect);
-    } else {
-      const { name, surname, email, password } = values;
       const data = {
-        name,
-        surname,
-        email,
-        password,
+        email: values.get("email"),
+        password: values.get("password"),
       };
-      this.props.actions.createNewUser(data, this.toggleRedirect);
+      this.props.actions.getUserData(data, this.toggleRedirect);
+    } else {
+      const data = {
+        name: values.get("name"),
+        surname: values.get("surname"),
+        email: values.get("email"),
+        password: values.get("password"),
+      };
+      this.props.actions.createNewUser(data, this.toggleFormState);
     }
   };
 
@@ -70,11 +75,9 @@ class AuthPage extends Component {
           {this.state.isLogIn ? (
             <Card body>
               <CardTitle tag="h3">Sign in</CardTitle>
-              {/* <form> */}
               <form onSubmit={this.handleSubmit}>
                 <Input
                   style={inputStyle}
-                  id="emailId"
                   name="email"
                   placeholder="Email"
                   type="email"
@@ -82,17 +85,11 @@ class AuthPage extends Component {
                 />
                 <Input
                   style={inputStyle}
-                  id="passwordId"
                   name="password"
                   placeholder="Password"
                   type="password"
                 />
-                <Button
-                  // onClick={() => this.handleSubmit()}
-                  color="primary"
-                  size="lg"
-                  type="submit"
-                >
+                <Button color="primary" size="lg">
                   Log in
                 </Button>
               </form>
@@ -107,35 +104,30 @@ class AuthPage extends Component {
               <form onSubmit={this.handleSubmit}>
                 <Input
                   style={inputStyle}
-                  id="nameId"
                   name="name"
                   placeholder="Name"
                   type="text"
                 />
                 <Input
                   style={inputStyle}
-                  id="surnameId"
                   name="surname"
                   placeholder="Surname"
                   type="text"
                 />
                 <Input
                   style={inputStyle}
-                  id="emailId"
                   name="email"
                   placeholder="Email"
                   type="email"
                 />
                 <Input
                   style={inputStyle}
-                  id="passwordId"
                   name="password"
                   placeholder="Password"
                   type="password"
                 />
                 <Input
                   style={inputStyle}
-                  id="repeatPassId"
                   name="repeatPass"
                   placeholder="Repeat password"
                   type="password"
@@ -147,19 +139,7 @@ class AuthPage extends Component {
                   </Label>
                 </span>
                 <br />
-                <Button
-                  onClick={() =>
-                    this.handleSubmit({
-                      name: "a",
-                      surname: "b",
-                      email: "c@kd.c",
-                      password: "111",
-                    })
-                  }
-                  // type="submit"
-                  color="primary"
-                  size="lg"
-                >
+                <Button color="primary" size="lg">
                   Register
                 </Button>
               </form>

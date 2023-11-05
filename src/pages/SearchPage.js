@@ -13,12 +13,15 @@ import {
 } from "reactstrap";
 import { Icon } from "@iconify/react";
 import { Header } from "./Header";
+import { get } from "lodash";
 
 const actionToProps = (dispatch) => ({
   actions: bindActionCreators({}, dispatch),
 });
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  user: get(state, "auth.user", {}),
+});
 
 const dummyCourses = [
   {
