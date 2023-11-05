@@ -2,7 +2,7 @@ import Axios from "axios";
 
 export function getUserData(data, cb) {
   return (dispatch) => {
-    let url = `localhost:8080/welcome`;
+    let url = `http://localhost:8080/auth/user/userProfile`;
     Axios.get(url)
       .then((res) => {
         dispatch({

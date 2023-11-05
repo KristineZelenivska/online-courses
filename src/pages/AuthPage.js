@@ -23,8 +23,13 @@ class AuthPage extends Component {
     };
   }
 
-  handleSubmit = (e, values) => {
-    const data = {};
+  handleSubmit = (values) => {
+    const data = {
+      name: "",
+      surname: "",
+      email: "",
+      password: "",
+    };
     this.props.actions.getUserData(data, this.toggleRedirect);
   };
 
