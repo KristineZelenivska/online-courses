@@ -4,9 +4,9 @@ import com.example.onlinecourses.dto.UserDTO;
 import com.example.onlinecourses.model.OCPerson;
 import com.example.onlinecourses.model.OCUser;
 import com.example.onlinecourses.repository.OCPersonRepository;
-import com.example.onlinecourses.repository.OCPersonRoleRepository;
 import com.example.onlinecourses.repository.OCUserRepository;
 import com.example.onlinecourses.security.OCUserDetails;
+import com.example.onlinecourses.security.dto.AuthRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,15 +27,35 @@ public class OCUserService implements UserDetailsService {
 
     @Autowired
     OCPersonRepository personRepository;
-
     @Autowired
-    OCPersonRoleRepository personRoleRepository;
+    PasswordEncoder encoder;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<OCUser> userDetail = userRepository.findByEmail(email);
         return userDetail.map(OCUserDetails::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User with " + email + " not found!"));
+    }
+
+    public OCPerson getUserProfile(String email){
+        List<OCPerson> personList = personRepository.findByUser_Email(email);
+        if (!personList.isEmpty()) {
+            return personList.get(0);
+        }
+        return null;
+    }
+
+    public OCPerson login(AuthRequest authRequest) {
+        String email = authRequest.getEmail();
+        String password = authRequest.getPassword();
+        Optional<OCUser> user = userRepository.findByEmail(email);
+        if (user.isPresent() && encoder.matches(password, user.get().getPassword())) {
+            List<OCPerson> personList = personRepository.findByUser_Email(email);
+            if (!personList.isEmpty()) {
+                return personList.get(0);
+            }
+        }
+        return null;
     }
 
     public String addUser(UserDTO user) {

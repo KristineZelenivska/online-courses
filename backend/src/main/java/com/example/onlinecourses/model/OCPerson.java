@@ -1,5 +1,6 @@
 package com.example.onlinecourses.model;
 
+import com.example.onlinecourses.listeners.OCPersonEventListener;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,6 +17,7 @@ import java.util.List;
 @Setter
 @Entity(name = OCPerson.ENTITY_NAME)
 @Table(name = OCPerson.TABLE_NAME)
+@EntityListeners(OCPersonEventListener.class)
 public class OCPerson extends OCAbstractEntity {
     public static final String ENTITY_NAME = "OCPerson";
     public static final String TABLE_NAME = "OCPerson";
@@ -23,6 +25,7 @@ public class OCPerson extends OCAbstractEntity {
     public static final String COLUMN_NAME_NAME = "name";
     public static final String COLUMN_SURNAME_NAME = "surname";
     public static final String COLUMN_BIRTHDAY_NAME = "birthDay";
+    public static final String COLUMN_PERSONROLE_NAME = "person_role";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,16 +41,15 @@ public class OCPerson extends OCAbstractEntity {
     @Column(name = COLUMN_BIRTHDAY_NAME)
     private Date birthDay;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "personRole_sys_Id")
-    private OCPersonRole personRole;
-
     @ManyToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "user_sysId", nullable = false)
     private OCUser user;
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OCPersonCourses> personCourses = new ArrayList<>();
+
+    @Column(name = COLUMN_PERSONROLE_NAME, nullable = false)
+    private String personRole;
 
     @Override
     public String getTableName() {
