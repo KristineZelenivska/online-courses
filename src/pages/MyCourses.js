@@ -5,11 +5,13 @@ import {
   Row,
   Col,
   Button,
-  Input,
   ListGroup,
   ListGroupItem,
   ListGroupItemHeading,
   ListGroupItemText,
+  Nav,
+  NavItem,
+  NavLink,
 } from "reactstrap";
 import { Icon } from "@iconify/react";
 import { Header } from "./Header";
@@ -54,7 +56,7 @@ const dummyCourses = [
     description: " Some long long texts",
   },
 ];
-class SearchPage extends Component {
+class MyCourses extends Component {
   constructor() {
     super();
     this.state = {};
@@ -63,41 +65,36 @@ class SearchPage extends Component {
   render() {
     return (
       <div>
-        <Header title="Search course" />
+        <Header title="Profile Page" />
         <br />
-        <form>
-          <Row style={{ margin: "5px" }}>
-            <Col xs="7">
-              <Input
-                id="exampleSearch"
-                name="search"
-                placeholder="search placeholder"
-                type="search"
-              />
-            </Col>
-            <Col xs="2">
-              <Input className="mb-3" type="select">
-                <option>Default Select</option>
-              </Input>
-            </Col>
-            <Col xs="2">
-              <Input className="mb-3" type="select">
-                <option>Default Select</option>
-              </Input>
-            </Col>
-            <Col>
-              <Button
-                size="lg"
-                color="success"
-                onClick={() => console.log("Searching")}
-              >
-                Search
-              </Button>
-            </Col>
-          </Row>
-        </form>
-        {/* row for search result */}
         <ListGroup>
+          <Nav
+            tabs
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
+            <NavItem>
+              <NavLink href="/profile/myCourses" active>
+                My courses
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="/profile/myCertificates">My certificates</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="/profile/settings">Settings</NavLink>
+            </NavItem>
+          </Nav>
+          <h3
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            My courses
+          </h3>
           {dummyCourses.map((course) => (
             <ListGroupItem key={course.id} style={{ margin: "10px" }}>
               <Row>
@@ -139,4 +136,4 @@ class SearchPage extends Component {
   }
 }
 
-export default connect(mapStateToProps, actionToProps)(SearchPage);
+export default connect(mapStateToProps, actionToProps)(MyCourses);

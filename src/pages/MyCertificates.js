@@ -5,11 +5,13 @@ import {
   Row,
   Col,
   Button,
-  Input,
   ListGroup,
   ListGroupItem,
   ListGroupItemHeading,
   ListGroupItemText,
+  Nav,
+  NavItem,
+  NavLink,
 } from "reactstrap";
 import { Icon } from "@iconify/react";
 import { Header } from "./Header";
@@ -54,7 +56,7 @@ const dummyCourses = [
     description: " Some long long texts",
   },
 ];
-class SearchPage extends Component {
+class MyCertificates extends Component {
   constructor() {
     super();
     this.state = {};
@@ -63,80 +65,62 @@ class SearchPage extends Component {
   render() {
     return (
       <div>
-        <Header title="Search course" />
+        <Header title="Profile Page" />
         <br />
-        <form>
-          <Row style={{ margin: "5px" }}>
-            <Col xs="7">
-              <Input
-                id="exampleSearch"
-                name="search"
-                placeholder="search placeholder"
-                type="search"
-              />
-            </Col>
-            <Col xs="2">
-              <Input className="mb-3" type="select">
-                <option>Default Select</option>
-              </Input>
-            </Col>
-            <Col xs="2">
-              <Input className="mb-3" type="select">
-                <option>Default Select</option>
-              </Input>
-            </Col>
-            <Col>
-              <Button
-                size="lg"
-                color="success"
-                onClick={() => console.log("Searching")}
-              >
-                Search
-              </Button>
-            </Col>
-          </Row>
-        </form>
-        {/* row for search result */}
         <ListGroup>
-          {dummyCourses.map((course) => (
+          <Nav
+            tabs
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
+            <NavItem>
+              <NavLink href="/profile/myCourses">My courses</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="/profile/myCertificates" active>
+                My certificates
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="/profile/settings">Settings</NavLink>
+            </NavItem>
+          </Nav>
+          <h3
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            My Certificates
+          </h3>
+          {/* somehow display certifiactes here */}
+          {/* {dummyCourses.map((course) => (
             <ListGroupItem key={course.id} style={{ margin: "10px" }}>
               <Row>
-                <Col
-                  xs="1"
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
+                <Col xs="1">
                   <img alt="Sample" src="https://picsum.photos/150/150" />
                 </Col>
                 <Col>
-                  <ListGroupItemHeading>{course.name}</ListGroupItemHeading>
+                  <ListGroupItemHeading>
+                    {course.name}
+                    <span style={{ float: "right" }}>{course.category}</span>
+                  </ListGroupItemHeading>
                   <ListGroupItemText>{course.description}</ListGroupItemText>
                   <span>{course.teacher}</span>
-                </Col>
-                <Col
-                  xs="1"
-                  style={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    alignContent: "space-around",
-                    justifyContent: "center",
-                  }}
-                >
-                  <ListGroupItemHeading>{course.category}</ListGroupItemHeading>
-                  <Button outline>
-                    Open course
-                    <Icon icon="icon-park:right" style={{ fontSize: "15px" }} />
+                  <Button outline style={{ float: "right" }}>
+                    Go to Course
+                    <Icon icon="icon-park:right" style={{ fontSize: "20px" }} />
                   </Button>
                 </Col>
               </Row>
             </ListGroupItem>
-          ))}
+          ))} */}
         </ListGroup>
       </div>
     );
   }
 }
 
-export default connect(mapStateToProps, actionToProps)(SearchPage);
+export default connect(mapStateToProps, actionToProps)(MyCertificates);
