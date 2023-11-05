@@ -30,21 +30,21 @@ const dummyCourses = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, seddo eiusmod tempor incididunt ut labore et dolore magnaaliqua. Ut enim ad minim veniam, quis nostrud exercitationullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sioccaecat cupidatat non proident, sunt in culpa qui officiadeserunt mollit anim id est laborum.",
   },
   {
-    id: "123234567",
+    id: "12323456",
     name: "Some name",
     category: "IT",
     teacher: "teacher's name",
     description: " Some long long texts",
   },
   {
-    id: "123234567",
+    id: "12323457",
     name: "Some name",
     category: "Art",
     teacher: "teacher's name",
     description: " Some long long texts",
   },
   {
-    id: "123234567",
+    id: "12323467",
     name: "Some name",
     category: "Some other",
     teacher: "teacher's name",
@@ -90,7 +90,7 @@ class SearchPage extends Component {
         {/* row for search result */}
         <ListGroup>
           {dummyCourses.map((course) => (
-            <ListGroupItem style={{ margin: "10px" }}>
+            <ListGroupItem key={course.id} style={{ margin: "10px" }}>
               <Row>
                 <Col xs="1">
                   <img alt="Sample" src="https://picsum.photos/150/150" />
