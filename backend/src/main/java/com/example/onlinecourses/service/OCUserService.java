@@ -1,6 +1,7 @@
 package com.example.onlinecourses.service;
 
 import com.example.onlinecourses.dto.UserDTO;
+import com.example.onlinecourses.exceptions.UserException;
 import com.example.onlinecourses.model.OCPerson;
 import com.example.onlinecourses.model.OCUser;
 import com.example.onlinecourses.repository.OCPersonRepository;
@@ -37,7 +38,7 @@ public class OCUserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User with " + email + " not found!"));
     }
 
-    public OCPerson getUserProfile(String email){
+    public OCPerson getUserProfile(String email) {
         List<OCPerson> personList = personRepository.findByUser_Email(email);
         if (!personList.isEmpty()) {
             return personList.get(0);
@@ -58,12 +59,8 @@ public class OCUserService implements UserDetailsService {
         return null;
     }
 
-    public String addUser(UserDTO user) {
-        try {
-            validateUser(user);
-        } catch (Exception e) {
-            return e.getMessage();
-        }
+    public String addUser(UserDTO user) throws Exception {
+        validateUser(user);
 
         OCUser ocUser = new OCUser();
         ocUser.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -82,13 +79,13 @@ public class OCUserService implements UserDetailsService {
 
     private void validateUser(UserDTO user) throws Exception {
         if (user == null) {
-            throw new Exception("User is not provided");
+            throw new UserException("User not provided!");
         }
         if (user.getName() == null || user.getPassword() == null || user.getEmail() == null) {
-            throw new Exception("User attributes not provided!");
+            throw new UserException("User attributes not provided!");
         }
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new Exception("User with this user name registered!");
+            throw new UserException("User with this user name registered!");
         }
     }
 }

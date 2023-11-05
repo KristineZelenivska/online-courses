@@ -1,6 +1,7 @@
 package com.example.onlinecourses.controller;
 
 import com.example.onlinecourses.dto.UserDTO;
+import com.example.onlinecourses.exceptions.UserException;
 import com.example.onlinecourses.model.OCPerson;
 import com.example.onlinecourses.security.dto.AuthRequest;
 import com.example.onlinecourses.security.jwt.JwtService;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = { "http://localhost:3000"})
+@CrossOrigin(origins = {"http://localhost:3000"})
 public class OCUserController {
     @Autowired
     private OCUserService service;
@@ -32,8 +33,14 @@ public class OCUserController {
     }
 
     @PostMapping("/addNewUser")
-    public String addNewUser(@RequestBody UserDTO user) {
-        return service.addUser(user);
+    public ResponseEntity<?> addNewUser(@RequestBody UserDTO user) {
+        try {
+            return ResponseEntity.ok(service.addUser(user));
+        } catch (UserException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage() + " , please contact administrator!");
+        }
     }
 
     @GetMapping("/user/userProfile/")
