@@ -1,8 +1,8 @@
 import Axios from "axios";
 
-export function getUserData(data, cb) {
+export function getUserData(email, cb) {
   return (dispatch) => {
-    let url = `http://localhost:8080/auth/user/userProfile`;
+    let url = `http://localhost:8080/auth/user/userProfile/${email}`;
     Axios.get(url)
       .then((res) => {
         dispatch({

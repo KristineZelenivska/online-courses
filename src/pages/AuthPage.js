@@ -20,17 +20,12 @@ class AuthPage extends Component {
     this.state = {
       isLogIn: false,
       redirectUser: false,
+      email: "",
     };
   }
 
   handleSubmit = (values) => {
-    const data = {
-      name: "",
-      surname: "",
-      email: "",
-      password: "",
-    };
-    this.props.actions.getUserData(data, this.toggleRedirect);
+    this.props.actions.getUserData(this.state.email, this.toggleRedirect);
   };
 
   toggleRedirect = () => {
@@ -39,6 +34,10 @@ class AuthPage extends Component {
 
   toggleFormState = () => {
     this.setState({ isLogIn: !this.state.isLogIn });
+  };
+
+  handleInputChange = (e) => {
+    this.setState({ email: e.target.value });
   };
 
   render() {
@@ -73,6 +72,8 @@ class AuthPage extends Component {
                   name="email"
                   placeholder="Email"
                   type="email"
+                  value={this.state.email}
+                  onChange={this.handleInputChange}
                 />
                 <Input
                   style={inputStyle}
