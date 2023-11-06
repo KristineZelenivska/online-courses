@@ -51,6 +51,9 @@ public class OCPerson extends OCAbstractEntity {
     @Column(name = COLUMN_PERSONROLE_NAME, nullable = false)
     private String personRole;
 
+    public String getFullName(){
+        return name + " " + surname;
+    }
     @Override
     public String getTableName() {
         return TABLE_NAME;
