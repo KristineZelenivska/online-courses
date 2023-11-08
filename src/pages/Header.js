@@ -13,7 +13,6 @@ export const Header = ({ title }) => {
           style={{ fontSize: "50px", marginRight: "10px" }}
           onClick={() => {
             navigate("/search");
-            window.location.reload();
           }}
         />
         <Button
@@ -21,7 +20,6 @@ export const Header = ({ title }) => {
           outline
           onClick={() => {
             navigate("/profile/myCourses");
-            window.location.reload();
           }}
         >
           My courses
@@ -49,7 +47,6 @@ export const Header = ({ title }) => {
             style={{ fontSize: "50px" }}
             onClick={() => {
               navigate("/profile/myCourses");
-              window.location.reload();
             }}
           />
         </NavItem>

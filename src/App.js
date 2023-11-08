@@ -5,6 +5,7 @@ import SearchPage from "./pages/SearchPage";
 import MyCourses from "./pages/MyCourses";
 import MyCertificates from "./pages/MyCertificates";
 import Settings from "./pages/Settings";
+import CoursePage from "./pages/CoursePage";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 
@@ -22,6 +23,7 @@ const App = () => {
             element={<MyCertificates />}
           />
           <Route exact path="/profile/settings" element={<Settings />} />
+          <Route exact path="/search/course" element={<CoursePage />} />
         </Routes>
       </BrowserRouter>
     </Provider>

@@ -1,19 +1,8 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import {
-  Row,
-  Col,
-  Button,
-  ListGroup,
-  ListGroupItem,
-  ListGroupItemHeading,
-  ListGroupItemText,
-  Nav,
-  NavItem,
-  NavLink,
-} from "reactstrap";
-import { Icon } from "@iconify/react";
+import { ListGroup, Nav, NavItem, NavLink } from "reactstrap";
+import { Link } from "react-router-dom";
 import { Header } from "./Header";
 import { get } from "lodash";
 
@@ -76,15 +65,19 @@ class MyCertificates extends Component {
             }}
           >
             <NavItem>
-              <NavLink href="/profile/myCourses">My courses</NavLink>
+              <NavLink tag={Link} to="/profile/myCourses">
+                My courses
+              </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/profile/myCertificates" active>
+              <NavLink tag={Link} to="/profile/myCertificates" active>
                 My certificates
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/profile/settings">Settings</NavLink>
+              <NavLink tag={Link} to="/profile/settings">
+                Settings
+              </NavLink>
             </NavItem>
           </Nav>
           <h3
@@ -96,27 +89,6 @@ class MyCertificates extends Component {
             My Certificates
           </h3>
           {/* somehow display certifiactes here */}
-          {/* {dummyCourses.map((course) => (
-            <ListGroupItem key={course.id} style={{ margin: "10px" }}>
-              <Row>
-                <Col xs="1">
-                  <img alt="Sample" src="https://picsum.photos/150/150" />
-                </Col>
-                <Col>
-                  <ListGroupItemHeading>
-                    {course.name}
-                    <span style={{ float: "right" }}>{course.category}</span>
-                  </ListGroupItemHeading>
-                  <ListGroupItemText>{course.description}</ListGroupItemText>
-                  <span>{course.teacher}</span>
-                  <Button outline style={{ float: "right" }}>
-                    Go to Course
-                    <Icon icon="icon-park:right" style={{ fontSize: "20px" }} />
-                  </Button>
-                </Col>
-              </Row>
-            </ListGroupItem>
-          ))} */}
         </ListGroup>
       </div>
     );
