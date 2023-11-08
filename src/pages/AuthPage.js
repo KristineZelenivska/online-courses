@@ -81,7 +81,6 @@ class AuthPage extends Component {
                   name="email"
                   placeholder="Email"
                   type="email"
-                  value={this.state.email}
                 />
                 <Input
                   style={inputStyle}

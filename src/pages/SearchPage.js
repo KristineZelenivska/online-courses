@@ -14,6 +14,7 @@ import {
 import { Icon } from "@iconify/react";
 import { Header } from "./Header";
 import { get } from "lodash";
+import { Navigate } from "react-router-dom";
 
 const actionToProps = (dispatch) => ({
   actions: bindActionCreators({}, dispatch),
@@ -57,8 +58,13 @@ const dummyCourses = [
 class SearchPage extends Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      openCourse: false,
+    };
   }
+  openCourse = () => {
+    this.setState({ openCourse: true });
+  };
 
   render() {
     return (
@@ -125,7 +131,7 @@ class SearchPage extends Component {
                   }}
                 >
                   <ListGroupItemHeading>{course.category}</ListGroupItemHeading>
-                  <Button outline>
+                  <Button outline onClick={this.openCourse}>
                     Open course
                     <Icon icon="icon-park:right" style={{ fontSize: "15px" }} />
                   </Button>
@@ -134,6 +140,9 @@ class SearchPage extends Component {
             </ListGroupItem>
           ))}
         </ListGroup>
+        {this.state.openCourse ? (
+          <Navigate to="/search/course"></Navigate>
+        ) : null}
       </div>
     );
   }

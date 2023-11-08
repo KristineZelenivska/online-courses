@@ -16,6 +16,7 @@ import {
 import { Icon } from "@iconify/react";
 import { Header } from "./Header";
 import { get } from "lodash";
+import { Link, Navigate } from "react-router-dom";
 
 const actionToProps = (dispatch) => ({
   actions: bindActionCreators({}, dispatch),
@@ -59,10 +60,15 @@ const dummyCourses = [
 class MyCourses extends Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      openCourse: false,
+    };
   }
-
+  openCourse = () => {
+    this.setState({ openCourse: true });
+  };
   render() {
+    const { user } = this.props;
     return (
       <div>
         <Header title="Profile Page" />
@@ -76,15 +82,19 @@ class MyCourses extends Component {
             }}
           >
             <NavItem>
-              <NavLink href="/profile/myCourses" active>
+              <NavLink tag={Link} to="/profile/myCourses" active>
                 My courses
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/profile/myCertificates">My certificates</NavLink>
+              <NavLink tag={Link} to="/profile/myCertificates">
+                My certificates
+              </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/profile/settings">Settings</NavLink>
+              <NavLink tag={Link} to="/profile/settings">
+                Settings
+              </NavLink>
             </NavItem>
           </Nav>
           <h3
@@ -95,42 +105,61 @@ class MyCourses extends Component {
           >
             My courses
           </h3>
-          {dummyCourses.map((course) => (
-            <ListGroupItem key={course.id} style={{ margin: "10px" }}>
-              <Row>
-                <Col
-                  xs="1"
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  <img alt="Sample" src="https://picsum.photos/150/150" />
-                </Col>
-                <Col>
-                  <ListGroupItemHeading>{course.name}</ListGroupItemHeading>
-                  <ListGroupItemText>{course.description}</ListGroupItemText>
-                  <span>{course.teacher}</span>
-                </Col>
-                <Col
-                  xs="1"
-                  style={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    alignContent: "space-around",
-                    justifyContent: "center",
-                  }}
-                >
-                  <ListGroupItemHeading>{course.category}</ListGroupItemHeading>
-                  <Button outline>
-                    Open course
-                    <Icon icon="icon-park:right" style={{ fontSize: "15px" }} />
-                  </Button>
-                </Col>
-              </Row>
-            </ListGroupItem>
-          ))}
+          {user.personCourses.length > 0 ? (
+            user.personCourses.map((course) => (
+              <ListGroupItem key={course.id} style={{ margin: "10px" }}>
+                <Row>
+                  <Col
+                    xs="1"
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <img alt="Sample" src="https://picsum.photos/150/150" />
+                  </Col>
+                  <Col>
+                    <ListGroupItemHeading>{course.name}</ListGroupItemHeading>
+                    <ListGroupItemText>{course.description}</ListGroupItemText>
+                    <span>{course.teacher}</span>
+                  </Col>
+                  <Col
+                    xs="1"
+                    style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      alignContent: "space-around",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <ListGroupItemHeading>
+                      {course.category}
+                    </ListGroupItemHeading>
+                    <Button outline onClick={this.openCourse}>
+                      Open course
+                      <Icon
+                        icon="icon-park:right"
+                        style={{ fontSize: "15px" }}
+                      />
+                    </Button>
+                  </Col>
+                </Row>
+              </ListGroupItem>
+            ))
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <h5>You do not have any course yet</h5>
+            </div>
+          )}
         </ListGroup>
+        {this.state.openCourse ? (
+          <Navigate to="/search/course"></Navigate>
+        ) : null}
       </div>
     );
   }
