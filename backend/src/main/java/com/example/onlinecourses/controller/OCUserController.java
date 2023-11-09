@@ -3,13 +3,19 @@ package com.example.onlinecourses.controller;
 import com.example.onlinecourses.dto.UserDTO;
 import com.example.onlinecourses.exceptions.UserException;
 import com.example.onlinecourses.model.OCPerson;
+import com.example.onlinecourses.security.OCUserDetails;
 import com.example.onlinecourses.security.dto.AuthRequest;
+import com.example.onlinecourses.security.dto.AuthResponse;
 import com.example.onlinecourses.security.jwt.JwtService;
 import com.example.onlinecourses.service.OCUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -43,28 +49,25 @@ public class OCUserController {
         }
     }
 
-    @GetMapping("/user/userProfile/")
-    public ResponseEntity<?> userProfile(@RequestParam String email) {
-        OCPerson person = service.getUserProfile(email);
-        if (person != null) {
-            return ResponseEntity.ok(person);
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User profile with this email not found!");
-    }
 
-/*    @GetMapping("/admin/adminProfile")
+    @GetMapping("/admin/adminProfile")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String adminProfile() {
         return "Welcome to Admin Profile";
     }
 
     @PostMapping("/generateToken")
-    public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
+    public ResponseEntity<?> authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
+        OCUserDetails user = service.loadUserByUsername(authRequest.getEmail());
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found!");
+        }
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword()));
         if (authentication.isAuthenticated()) {
-            return jwtService.generateToken(authRequest.getUsername());
+            AuthResponse res = new AuthResponse(jwtService.generateToken(authRequest.getEmail()), user.getUser().getEmail(), service.getUserProfile(authRequest.getEmail()).getPersonRole());
+            return ResponseEntity.ok(res);
         } else {
             throw new UsernameNotFoundException("invalid user request !");
         }
-    }*/
+    }
 }

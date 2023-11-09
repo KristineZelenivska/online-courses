@@ -9,7 +9,6 @@ import com.example.onlinecourses.repository.OCUserRepository;
 import com.example.onlinecourses.security.OCUserDetails;
 import com.example.onlinecourses.security.dto.AuthRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class OCUserService implements UserDetailsService {
+public class OCUserService extends OCAbstractService implements UserDetailsService {
     @Autowired
     OCUserRepository userRepository;
 
@@ -32,7 +31,7 @@ public class OCUserService implements UserDetailsService {
     PasswordEncoder encoder;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public OCUserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<OCUser> userDetail = userRepository.findByEmail(email);
         return userDetail.map(OCUserDetails::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User with " + email + " not found!"));
@@ -65,7 +64,7 @@ public class OCUserService implements UserDetailsService {
         OCUser ocUser = new OCUser();
         ocUser.setPassword(passwordEncoder.encode(user.getPassword()));
         ocUser.setEmail(user.getEmail());
-        userRepository.save(ocUser);
+        //userRepository.save(ocUser);
 
         OCPerson ocPerson = new OCPerson();
         ocPerson.setUser(ocUser);
@@ -81,8 +80,12 @@ public class OCUserService implements UserDetailsService {
         if (user == null) {
             throw new UserException("User not provided!");
         }
-        if (user.getName() == null || user.getPassword() == null || user.getEmail() == null) {
+        if (user.getName() == null || user.getPassword() == null || user.getEmail() == null
+                || user.getName().isEmpty() || user.getEmail().isEmpty() || user.getPassword().isEmpty()) {
             throw new UserException("User attributes not provided!");
+        }
+        if (!user.getEmail().contains("@")) {
+            throw new UserException("Wrong email format!");
         }
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new UserException("User with this user name registered!");

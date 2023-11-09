@@ -2,6 +2,7 @@ package com.example.onlinecourses.security;
 
 import com.example.onlinecourses.model.OCUser;
 import com.example.onlinecourses.model.OCUserGroups;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,7 +14,7 @@ import java.util.List;
 public class OCUserDetails implements UserDetails {
     private String email;
     private String password;
-
+    @Getter
     private OCUser user;
 
     public OCUserDetails(OCUser ocUser) {
